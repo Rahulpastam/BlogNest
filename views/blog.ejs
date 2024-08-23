@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <%- include("./partials/head.ejs") %>
+   <title>Blogs Page</title>
+</head>
+<body>
+    <%- include("./partials/navbar.ejs") %>
+    
+   <div class="container mt-4">
+        <h1><%= blog.title %></h1>
+        <img src="<%= blog.coverImageURL %>" width="400px"  style="border: 2px solid;" >
+        <p class="mt-3"> <%= blog.body %></p>
+   </div>
+
+   <div class="container mt-3">
+    <img src="<%= blog.createdBy.profileImageURL %>" width="50px" style="border-radius: 50px; border: 2px solid;">
+    <span style="font-weight:bold"><%= blog.createdBy.fullName %></span>
+    <p><span style="font-weight: 700; text-decoration: underline;">Posted on:</span> <%= blog.createdBy.createdAt %></p>
+   </div>
+
+ 
+   <div class="container mt-3">
+    <h2>Comments (<%= comments.length %>)</h2>
+    <% if (locals.user) { %>
+        <form action="/blog/comment/<%= blog._id %>" method="post">
+            <div class="mb-3">
+                <input 
+                type="text"
+                name="content"
+                class="form-control"
+                placeholder="Enter your Comment">
+                <button type="submit" class="btn btn-md btn-primary" style="margin-top: 3px;">Add</button>
+            </div>
+        </form>
+    <% } else {%>
+       <a href="/user/signin">Sign-In</a>  to Add a comment
+    <% } %>
+   </div>
+
+
+   <div class=" container mt-3">
+    <% comments.forEach(comment => { %>
+        <img src="<%= comment.createdBy.profileImageURL %>" width="30px" style="border-radius: 50px; border: 2px solid;">
+        <span style="font-weight:bold"><%= comment.createdBy.fullName %></span>
+        <pre><%= comment.content %></pre>
+    <% }) %>
+   </div>
+    <%- include("./partials/scripts.ejs") %>
+</body>
+</html>
